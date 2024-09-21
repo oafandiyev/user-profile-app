@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: user-profile-app-postgres
+    image: postgres
+    ports:
+      - "54321:54321"
+    environment:
+      POSTGRES_DB: user-profile-app
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  user-profile-backend:
+    container_name: user-profile-backend
+    image: user-profile-backend
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+
+    tty: true
+    stdin_open: true
